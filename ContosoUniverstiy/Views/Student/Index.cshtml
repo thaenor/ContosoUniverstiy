@@ -9,6 +9,16 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+<!-- here comes the search box -->
+@using (Html.BeginForm()) 
+{ 
+    <p>
+        find by name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
 <table>
     <tr>
         <!-- This code uses the information in the ViewBag properties to set up hyperlinks with the appropriate query string values. -->
