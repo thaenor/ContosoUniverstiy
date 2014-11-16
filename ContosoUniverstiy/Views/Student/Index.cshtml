@@ -11,14 +11,14 @@
 </p>
 <table>
     <tr>
+        <!-- This code uses the information in the ViewBag properties to set up hyperlinks with the appropriate query string values. -->
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
+        <th> First Name
+            </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstMidName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EnrollmentDate)
+            @Html.ActionLink("Enrollment Date", "Index", new { sortOrder = ViewBag.DateSortParm })
         </th>
         <th></th>
     </tr>
