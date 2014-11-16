@@ -1,0 +1,70 @@
+﻿@model ContosoUniverstiy.Models.Student
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Student</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LastName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FirstMidName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstMidName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.EnrollmentDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EnrollmentDate)
+    </div>
+
+
+    <!--
+        This code loops through the entities in the Enrollments navigation property. 
+        For each Enrollment entity in the property, it displays the course title and the grade. 
+        The course title is retrieved from the Course entity that's stored in the Course navigation property of the Enrollments entity. 
+        All of this data is retrieved from the database automatically when it's needed. 
+        (In other words, you are using lazy loading here. 
+        You did not specify eager loading for the Courses navigation property, so the first time you try to access that property, 
+        a query is sent to the database to retrieve the data. 
+        You can read more about lazy loading and eager loading in the Reading Related Data tutorial later in this series.)
+        -->
+    <div class="display-label">
+        @Html.LabelFor(model => model.Enrollments)
+    </div>
+    <div class="display-field">
+        <table>
+            <tr>
+                <th>Course Title</th>
+                <th>Grade</th>
+            </tr>
+            @foreach (var item in Model.Enrollments) 
+            { 
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Grade)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.StudentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

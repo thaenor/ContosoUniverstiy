@@ -1,0 +1,53 @@
+﻿@model ContosoUniverstiy.Models.Student
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    <!-- Create.chstml also includes Html.AntiForgeryToken(), which works with the ValidateAntiForgeryToken attribute in the controller to help prevent cross-site request forgery attacks -->
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Student</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LastName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastName)
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FirstMidName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FirstMidName)
+            @Html.ValidationMessageFor(model => model.FirstMidName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EnrollmentDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EnrollmentDate)
+            @Html.ValidationMessageFor(model => model.EnrollmentDate)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
