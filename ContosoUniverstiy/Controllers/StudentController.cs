@@ -16,10 +16,45 @@ namespace ContosoUniverstiy.Controllers
 
         //
         // GET: /Student/
-
-        public ActionResult Index()
+        /*
+         * This code receives a sortOrder parameter from the query string in the URL. 
+         * The query string value is provided by ASP.NET MVC as a parameter to the action method. 
+         * The parameter will be a string that's either "Name" or "Date", optionally followed by an underscore and the string "desc" to specify descending order. 
+         * The default sort order is ascending.
+         * The first time the Index page is requested, there's no query string. 
+         * The students are displayed in ascending order by LastName, which is the default as established by the fall-through case in the switch statement. 
+         * When the user clicks a column heading hyperlink, the appropriate sortOrder value is provided in the query string.
+         */
+        public ActionResult Index(string sortOrder)
         {
-            return View(db.Students.ToList());
+            /*
+             * The two ViewBag variables bellow are used so that the view can configure the column heading hyperlinks with the appropriate query string values
+             * These are ternary statements. 
+             * The first one specifies that if the sortOrder parameter is null or empty, ViewBag.NameSortParm should be set to "name_desc"; 
+             * otherwise, it should be set to an empty string. 
+             */
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "Date_desc" : "Date";
+            var students = from s in db.Students
+                           select s;
+            switch (sortOrder) 
+            { 
+                case "Name_desc":
+                    students = students.OrderByDescending(s => s.LastName);
+                    break;
+                case "Date":
+                    students = students.OrderBy(s => s.EnrollmentDate);
+                    break;
+                case "Date_desc":
+                    students = students.OrderByDescending(s => s.EnrollmentDate);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.LastName);
+                    break;
+            }
+            return View(students.ToList());
+            //Old return statement was returning the db students unsorted list
+            //return View(db.Students.ToList());
         }
 
         //
