@@ -24,8 +24,10 @@ namespace ContosoUniverstiy.Controllers
          * The first time the Index page is requested, there's no query string. 
          * The students are displayed in ascending order by LastName, which is the default as established by the fall-through case in the switch statement. 
          * When the user clicks a column heading hyperlink, the appropriate sortOrder value is provided in the query string.
+         * ###
+         * For my next trick, I'll add a search function, adding the searchString param as the if statement to locate student
          */
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string searchString)
         {
             /*
              * The two ViewBag variables bellow are used so that the view can configure the column heading hyperlinks with the appropriate query string values
@@ -37,6 +39,31 @@ namespace ContosoUniverstiy.Controllers
             ViewBag.DateSortParm = sortOrder == "Date" ? "Date_desc" : "Date";
             var students = from s in db.Students
                            select s;
+            
+            //searching student... where did he go?
+            if (!String.IsNullOrEmpty(searchString)) 
+            {
+                students = students.Where(s => s.LastName.ToUpper().Contains(searchString.ToUpper())
+                                        || s.FirstMidName.ToUpper().Contains(searchString.ToUpper())); 
+            }
+            /*
+             * Nice! You've just added a searchString parameter to the Index method.
+             * You've also added  to the LINQ statement a where clause that selects only students whose first name or last name contains the search string. 
+             * The search string value is received from a text box that you'll add to the Index view. 
+             * The statement that adds the where clause is executed only if there's a value to search for
+             * 
+             * Note: 
+             * In many cases you can call the same method either on an Entity Framework entity set or as an extension method on an in-memory collection. 
+             * The results are normally the same but in some cases may be different. 
+             * For example, the .NET Framework implementation of the Contains method returns all rows when you pass an empty string to it, but the Entity Framework provider for SQL Server Compact 4.0 returns zero rows for empty strings.
+             * Therefore the code in the example (putting the Where statement inside an if statement) makes sure that you get the same results for all versions of SQL Server. 
+             * Also, the .NET Framework implementation of the Contains method performs a case-sensitive comparison by default, but Entity Framework SQL Server providers perform case-insensitive comparisons by default. 
+             * Therefore, calling the ToUpper method to make the test explicitly case-insensitive ensures that results do not change when you change the code later to use a repository, which will return an IEnumerable collection instead of an IQueryable object. 
+             * (When you call the Contains method on an IEnumerable collection, you get the .NET Framework implementation; 
+             * when you call it on an IQueryable object, you get the database provider implementation.)
+             */
+
+
             switch (sortOrder) 
             { 
                 case "Name_desc":
